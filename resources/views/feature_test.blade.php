@@ -1,7 +1,7 @@
 
 use {{ $fullModelClass }};
 
-it('can get all {{ str(class_basename($fullModelClass))->plural()->studly()->value() }}', function () {
+it('can get paginated {{ str(class_basename($fullModelClass))->plural()->studly()->value() }}', function () {
     ${{ str(class_basename($fullModelClass))->camel()->singular()->value() }} = {{ class_basename($fullModelClass) }}::factory()->create();
 
     // $response = loginAdmin()->get('/api/v1/???');
@@ -17,10 +17,10 @@ it('can get all {{ str(class_basename($fullModelClass))->plural()->studly()->val
 });
 
 it('can create {{ str(class_basename($fullModelClass))->camel()->singular()->value() }}', function () {
-    // $response = loginEnduser()->post("/api/v1/???", [
+    // $response = loginAdmin()->post("/api/v1/???", [
         //
     // ]);
-    // $response = loginAdmin()->post("/api/v1/???", [
+    // $response = loginEnduser()->post("/api/v1/???", [
         //
     // ]);
 
