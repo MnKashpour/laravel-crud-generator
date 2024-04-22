@@ -6,7 +6,7 @@ use App\Http\Resources\Admin\Resources\ResourceResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin {{ $fullModelClass }} */
+// /** @mixin \{{ $fullModelClass }} */
 class {{ $class }} extends JsonResource
 {
     /**
