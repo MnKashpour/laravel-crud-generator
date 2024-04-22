@@ -42,6 +42,11 @@ abstract class BaseGenerator
         return $this->getBaseNamespace() . '\\' . $this->namespaceFromPath($fileDir);
     }
 
+    public function getFullyQualifiedClass(): string
+    {
+        return $this->getFullNamespace() . '\\' . $this->getClassName();
+    }
+
     protected function renderView(): string
     {
         return view($this->getViewName(), $this->getViewVars())->render();

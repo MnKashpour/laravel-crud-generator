@@ -5,6 +5,7 @@ namespace MnKashpour\LaravelCrudGenerator\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use MnKashpour\LaravelCrudGenerator\Generators\ControllerGenerator;
+use MnKashpour\LaravelCrudGenerator\Generators\FeatureTestGenerator;
 use MnKashpour\LaravelCrudGenerator\Generators\ModelGenerator;
 use MnKashpour\LaravelCrudGenerator\Generators\RequestGenerator;
 use MnKashpour\LaravelCrudGenerator\Generators\ResourceGenerator;
@@ -44,18 +45,19 @@ class GenerateCrudCommand extends Command
         do {
             $namespace = $this->anticipate('Namespace', ['Admin', 'Enduser']);
 
+            $featureTestGenerator = (new FeatureTestGenerator("$namespace/$name", $modelGenerator->getFullyQualifiedClass()));
             $resourceGenerator = new ResourceGenerator(
-                name: "$namespace\\$name",
-                fullModelClass: $modelGenerator->getFullNamespace(),
+                name: "$namespace/$name",
+                fullModelClass: $modelGenerator->getFullyQualifiedClass(),
             );
-            $createRequestGenerator = new RequestGenerator("$namespace\\$name", requestSuffix: 'CreateRequest');
-            $updateRequestGenerator = new RequestGenerator("$namespace\\$name", requestSuffix: 'UpdateRequest');
+            $createRequestGenerator = new RequestGenerator("$namespace/$name", requestSuffix: 'CreateRequest');
+            $updateRequestGenerator = new RequestGenerator("$namespace/$name", requestSuffix: 'UpdateRequest');
             $controllerGenerator = new ControllerGenerator(
-                name: "$namespace\\$name",
-                fullModelClass: $modelGenerator->getFullNamespace(),
-                fullCreateRequestClass: $createRequestGenerator->getFullNamespace(),
-                fullUpdateRequestClass: $updateRequestGenerator->getFullNamespace(),
-                fullResourceClass: $resourceGenerator->getFullNamespace(),
+                name: "$namespace/$name",
+                fullModelClass: $modelGenerator->getFullyQualifiedClass(),
+                fullCreateRequestClass: $createRequestGenerator->getFullyQualifiedClass(),
+                fullUpdateRequestClass: $updateRequestGenerator->getFullyQualifiedClass(),
+                fullResourceClass: $resourceGenerator->getFullyQualifiedClass(),
             );
 
             if ($generateAll || $this->confirm('Create Request?', true)) {
@@ -69,6 +71,9 @@ class GenerateCrudCommand extends Command
             }
             if ($generateAll || $this->confirm('Controller?', true)) {
                 $controllerGenerator->generate(force: $forceGenerate);
+            }
+            if ($generateAll || $this->confirm('Feature Tests?', true)) {
+                $featureTestGenerator->generate(force: $forceGenerate);
             }
         } while ($this->confirm('Another Namespace?'));
     }
